@@ -1,15 +1,14 @@
+package Server;
 import java.io.IOException;
 
-import Server.ServerApplicationInterface;
-import Server.ServerServer;
 import bin.Message;
 
 public class Main implements ServerApplicationInterface{
-
+	ServerServer server;
 	public void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			ServerServer server = new ServerServer(this);
+			server = new ServerServer(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -19,8 +18,8 @@ public class Main implements ServerApplicationInterface{
 
 	@Override
 	public void handleMessage(Message message, String connectionId) {
-		// TODO Auto-generated method stub
-		
+		server.openConnection(connectionId);
+		System.out.println(message.toString());
 	}
 
 }
