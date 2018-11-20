@@ -1,6 +1,6 @@
-package network.server.gruppe2;
+package Server;
 
-import network.Message;
+
 import java.net.*;
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.io.*;
-import network.server.Server;
-import network.server.ServerApplicationInterface;
 import java.util.function.Consumer;
 
+import bin.Message;
 public class ServerServer extends Server {
 
 	protected int port = 4444;

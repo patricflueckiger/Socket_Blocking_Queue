@@ -1,9 +1,8 @@
-package network.server.gruppe2;
+package Server;
+
 
 import java.net.Socket;
 import java.util.function.Consumer;
-
-import network.Message;
 
 public class TaskItem {
 	String connectionId;
