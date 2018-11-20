@@ -1,4 +1,5 @@
-package network.server.gruppe2;
+package Server;
+
 
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
