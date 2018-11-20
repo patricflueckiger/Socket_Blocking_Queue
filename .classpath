@@ -3,5 +3,9 @@
 <<<<<<< HEAD
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+>>>>>>> d049d80613acef01ab2eec92a448753d5e985895
 	<classpathentry kind="output" path="bin"/>
 </classpath>
