@@ -3,6 +3,10 @@ import network.client.ClientApplicationInterface;
 
 public class ServerClientProxy extends ServerProxy{
 	
+	private Socket clientSocket;
+	private PrintWriter out;
+	private BufferedReader in; 
+	
 	public ClientServerProxy(ClientApplicationInterface clientApplication) {
 		super(clientApplication);
 		// TODO Auto-generated constructor stub
@@ -11,7 +15,9 @@ public class ServerClientProxy extends ServerProxy{
 	@Override
 	public void send(Message message) {
 		// TODO Auto-generated method stub
-		
+		out.println(message);
+		String resp = in.readLine();
+		retunr resp;
 	}
 	private void deliverResponseMessageToClient(Message responseMessage) {
 		Thread responseThread = new Thread() {
@@ -23,11 +29,18 @@ public class ServerClientProxy extends ServerProxy{
 		responseThread.start();
 	}
 
-//	public void openConnection() {
-//		//socket eröffnen message an server 
-//		
-//	}
-//	public void closeConnection() {
-//		
-//	} 
+	public void openConnection(String ip, int port) {
+		//socket eröffnen message an server 
+		clientSocket = new Socket(ip, port);
+		out = new PrintWriter(clientSocket.getOutputStream(), true);
+		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		
+	}
+	public void closeConnection() {
+		in.close();
+		out.close();
+		clientSocket.close();
+		
+	} 
 }
+
