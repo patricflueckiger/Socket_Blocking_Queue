@@ -38,6 +38,7 @@ public class ServerServer extends Server {
 	public void openConnection(String connectionString) {
 		
 		try {
+			sockets.put(connectionString, serverSocket.accept()); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
