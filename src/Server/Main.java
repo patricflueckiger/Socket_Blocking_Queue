@@ -1,10 +1,8 @@
 import java.io.IOException;
 
 
-public class Main implements ServerApplicationInterface{
 		try {
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
