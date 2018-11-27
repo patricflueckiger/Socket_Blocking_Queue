@@ -1,16 +1,12 @@
 package src.Server;
 
 import java.io.IOException;
-
-import src.Server.MessageEntry;
-import src.Server.MessageQueue;
-import src.Server.ServerApplicationInterface;
 import src.bin.*;
 
 
 public class Main implements ServerApplicationInterface {
-	ServerServer server;
-	public void main(String[] args) {
+	static ServerServer server;
+	public static void main(String[] args) {
 
 		MessageQueue queue = new MessageQueue();
 		MessageEntry entry = new MessageEntry(queue);
