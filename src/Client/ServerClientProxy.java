@@ -1,9 +1,9 @@
-import network.Message;
-import network.client.ClientApplicationInterface;
-
+package src.Client;
+import src.Client.*;
+import src.bin.Message;
 public class ServerClientProxy extends ServerProxy{
 	
-	public ClientServerProxy(ClientApplicationInterface clientApplication) {
+	public ServerClientProxy(ClientApplicationInterface clientApplication) {
 		super(clientApplication);
 		// TODO Auto-generated constructor stub
 	}

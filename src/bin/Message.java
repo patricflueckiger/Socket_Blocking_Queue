@@ -1,4 +1,4 @@
-package bin;
+package src.bin;
 
 
 import java.io.Serializable;

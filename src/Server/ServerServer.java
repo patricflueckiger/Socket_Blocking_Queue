@@ -1,4 +1,3 @@
-package Server;
 
 
 import java.net.*;
@@ -11,15 +10,14 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.io.*;
 import java.util.function.Consumer;
 
-import bin.Message;
 public class ServerServer extends Server {
 
 	protected int port = 4444;
 	protected String clientIp = "";
 	private ServerSocket serverSocket;
-	protected HashMap<String, Socket> sockets;
 	ExecutorService executor = Executors.newFixedThreadPool(5);
 	BlockingQueue<TaskItem> queue = new LinkedBlockingDeque<>();
+	
 	
 	public ServerServer(ServerApplicationInterface serverApplication) throws IOException {
 		super(serverApplication);
@@ -41,6 +39,7 @@ public class ServerServer extends Server {
 		
 		try {
 			sockets.put(connectionString, serverSocket.accept());
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,8 +48,9 @@ public class ServerServer extends Server {
 	}
 	
 	private static Consumer<Socket> sendingTask(Message message, String connectionId){
-		//adding sending method
 		return null;
 	}
+
+
 
 }
