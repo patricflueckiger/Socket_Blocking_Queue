@@ -1,6 +1,6 @@
-package Client;
+package src.Client;
 
-import bin.Message;
+import src.bin.Message;
 
 /**
  * Diese Schnittstelle muss von einer Klasse innerhalb der Bomberman-Client-Komponente

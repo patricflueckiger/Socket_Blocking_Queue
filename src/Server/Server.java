@@ -1,5 +1,3 @@
-package Server;
-import bin.Message;
 
 /**
  * Diese Klasse definiert die Schnittstelle, welche die Netzwerkschicht der Bomberman-Server-Komponente

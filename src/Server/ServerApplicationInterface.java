@@ -1,5 +1,3 @@
-package Server;
-import bin.Message;
 
 /**
  * Diese Schnittstelle muss von einer Klasse innerhalb der Bomberman-Server-Komponente
