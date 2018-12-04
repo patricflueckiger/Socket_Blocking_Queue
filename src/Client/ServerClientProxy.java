@@ -5,8 +5,10 @@ public class ServerClientProxy extends ServerProxy{
 	
 
 	private Socket clientSocket;
+	private int port = 4444;
 	private PrintWriter out;
 	private BufferedReader in; 
+	private String serverIp = ""; 
 	
 	public ClientServerProxy(ClientApplicationInterface clientApplication) {
 
