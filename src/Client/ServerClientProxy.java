@@ -17,11 +17,13 @@ public class ServerClientProxy extends ServerProxy{
 	}
 
 	@Override
-	public void send(Message message) {
+	public void send(String message) {
 		// TODO Auto-generated method stub
-		out.println(message);
-		String resp = in.readLine();
-		retunr resp;
+//		out.println(message);
+//		String resp = in.readLine();
+//		retunr resp;
+		out = new PrintWriter(clientSocket.getOutputStream(message), true);
+		
 	}
 	private void deliverResponseMessageToClient(Message responseMessage) {
 		Thread responseThread = new Thread() {
@@ -36,7 +38,7 @@ public class ServerClientProxy extends ServerProxy{
 	public void openConnection(String ip, int port) {
 		//socket eröffnen message an server 
 		clientSocket = new Socket(ip, port);
-		out = new PrintWriter(clientSocket.getOutputStream(), true);
+	//	out = new PrintWriter(clientSocket.getOutputStream(), true);
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		
 	}
