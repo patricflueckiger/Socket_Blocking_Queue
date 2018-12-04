@@ -11,14 +11,8 @@ public class Main implements ServerApplicationInterface {
 		MessageQueue queue = new MessageQueue();
 		MessageEntry entry = new MessageEntry(queue);
 		// TODO Auto-generated method stub
-		try {
-			server = new ServerServer(this);
-			server = new ServerServer(this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		server = ServerServer.getInstance(entry);
 
-		}
 	}
 
 	@Override
