@@ -1,3 +1,6 @@
+package src.Server;
+
+import src.bin.Message;
 
 /**
  * Diese Schnittstelle muss von einer Klasse innerhalb der Bomberman-Server-Komponente

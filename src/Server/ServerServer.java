@@ -1,4 +1,6 @@
 
+package src.Server;
+import src.bin.Message;
 
 import java.net.*;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ public class ServerServer extends Server {
 	protected int port = 4444;
 	protected String clientIp = "";
 	private ServerSocket serverSocket;
+	protected HashMap<String, Socket> sockets;
 	ExecutorService executor = Executors.newFixedThreadPool(5);
 	BlockingQueue<TaskItem> queue = new LinkedBlockingDeque<>();
 	
@@ -36,9 +39,9 @@ public class ServerServer extends Server {
 	}
 	
 	public void openConnection(String connectionString) {
-		
+
 		try {
-			sockets.put(connectionString, serverSocket.accept());
+			sockets.put(connectionString, serverSocket.accept()); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
