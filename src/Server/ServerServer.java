@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.io.*;
 import java.util.function.Consumer;
 
-public final class ServerServer extends Server {
+public final class ServerServer extends Server implements Observer{
 
     private static volatile ServerServer serverInstance;
 	protected int port = 4444;
@@ -21,6 +21,8 @@ public final class ServerServer extends Server {
 	protected HashMap<String, Socket> sockets;
 	ExecutorService executor = Executors.newFixedThreadPool(5);
 	BlockingQueue<TaskItem> queue = new LinkedBlockingDeque<>();
+	private int maxClient = 4;
+	protected List<ClientThread> clients = new List<ClientThread>();
 
 	//Singleton Design Pattern
 	public static ServerServer getInstance(ServerApplicationInterface serverApplicationInterface){
@@ -58,9 +60,14 @@ public final class ServerServer extends Server {
 	}
 	
 	public void openConnection(String connectionString) {
-
+		
 		try {
-			sockets.put(connectionString, serverSocket.accept()); 
+			ServerSocket serverSocket = new ServerSocket(port);
+			
+			for(int i=0; i < maxClient; i++) {
+				clients.Add(new ClientThread());
+			}
+			sockets.put(connectionString, serverSocket.accept(serverSocket, i++.toString(), this)); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -73,6 +80,11 @@ public final class ServerServer extends Server {
         //Implement sending Task
 		return null;
 	}
+	
+	@Override
+    public void update(Observable o, Message message) {
+		serverApplication.handleMessage(message);
+    }
 
 
 
