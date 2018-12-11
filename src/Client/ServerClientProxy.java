@@ -24,6 +24,7 @@ public class ServerClientProxy extends ServerProxy{
 //		retunr resp;
 		out = new PrintWriter(clientSocket.getOutputStream(message), true);
 		
+		
 	}
 	private void deliverResponseMessageToClient(Message responseMessage) {
 		Thread responseThread = new Thread() {
@@ -37,7 +38,7 @@ public class ServerClientProxy extends ServerProxy{
 
 	public void openConnection(String ip, int port) {
 		//socket eröffnen message an server 
-		clientSocket = new Socket(ip, port);
+	Socket clientSocket = new Socket(ip, port);
 	//	out = new PrintWriter(clientSocket.getOutputStream(), true);
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		

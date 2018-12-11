@@ -7,11 +7,9 @@ import src.bin.*;
 public class Main implements ServerApplicationInterface {
 	static ServerServer server;
 	public static void main(String[] args) {
-
-		MessageQueue queue = new MessageQueue();
-		MessageEntry entry = new MessageEntry(queue);
+		ServerApplicationStub serverApplicationStub = new ServerApplicationStub();
 		// TODO Auto-generated method stub
-		server = ServerServer.getInstance(entry);
+		server = ServerServer.getInstance(serverApplicationStub);
 
 	}
 
