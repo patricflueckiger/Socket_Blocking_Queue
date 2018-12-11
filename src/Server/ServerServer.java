@@ -20,7 +20,6 @@ public final class ServerServer extends Server {
 	private ServerSocket serverSocket;
 	protected HashMap<String, Socket> sockets;
 	ExecutorService executor = Executors.newFixedThreadPool(5);
-	BlockingQueue<TaskItem> queue = new LinkedBlockingDeque<>();
 
 	//Singleton Design Pattern
 	public static ServerServer getInstance(ServerApplicationInterface serverApplicationInterface){
@@ -46,7 +45,6 @@ public final class ServerServer extends Server {
 
 	@Override
 	public void send(Message message, String connectionId) {
-		queue.add(new TaskItem(connectionId,sendingTask(message,connectionId)));
         System.out.println("Added message sending task to blocking queue.");
         System.out.println("Top:"+connectionId);
 	}
@@ -68,12 +66,5 @@ public final class ServerServer extends Server {
 		}
 		
 	}
-	
-	private static Consumer<Socket> sendingTask(Message message, String connectionId){
-        //Implement sending Task
-		return null;
-	}
-
-
 
 }
