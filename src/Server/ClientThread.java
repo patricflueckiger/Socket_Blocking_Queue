@@ -1,7 +1,10 @@
 package src.Server;
 
 import src.bin.ClientMessage;
+import src.bin.Message;
+import sun.util.resources.cldr.agq.CurrencyNames_agq;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -16,19 +19,27 @@ public class ClientThread extends Thread
 	private ServerSocket ss;
 	private String threadName;
 	private boolean connected; 
-	private Observable observable;
-	
-	public ClientThread(ServerSocket ss, String name, Observer observer) 
+	private ServerApplicationInterface messageHandler;
+	private Socket cs;
+	private ObjectInputStream is;
+	private ObjectOutputStream os;
+
+	public ClientThread(ServerSocket ss, String name, ServerApplicationInterface messageHandler)
 	{
 		this.ss = ss;
 		this.threadName = name;
-		this.observable = new Observable();
-		this.observable.addObserver(observer);
 		this.connected = false;
+		this.messageHandler =messageHandler;
+		try {
+			cs = ss.accept();
+			is = new ObjectInputStream(cs.getInputStream());
+			os = new ObjectOutputStream(cs.getOutputStream());
+			this.connected = true;
+			System.out.println("Verbindung zum ClientSocket wurde aufgebaut.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
-	
 	
 	public boolean isConnected() 
 	{
@@ -37,43 +48,38 @@ public class ClientThread extends Thread
 	
 	public void run()
 	{
-		this.threadName = Thread.currentThread().getName();
-		System.out.println("Server wartet auf Verbindung ("+threadName+")");
-		
-		sendMessage("hello");
+
+		try {
+			Message clientMessage = (Message) is.readObject();
+			messageHandler.handleMessage(clientMessage, threadName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
 	public void sendMessage(String message)
 	{
 		try {
-			Socket cs = ss.accept(); 
-		
-			ObjectInputStream is = new ObjectInputStream(cs.getInputStream());
-			ObjectOutputStream os = new ObjectOutputStream(cs.getOutputStream());
-		
-			this.connected = true;
-			System.out.println("Verbindung zum ClientSocket wurde aufgebaut.");
-		
-			//os.writeObject(message);
-			ClientMessage clientMessage = (ClientMessage) is.readObject();
-			is.close();
-			os.close();
-			cs.close();
-
-			observable.notifyObservers();
-
-			this.connected = false;
-			System.out.println("Verbindung wurde abgebaut ("+threadName+")");
-			
+			os.writeObject(message);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
-	
+
+	public void closeStreams(){
+		try {
+			is.close();
+			os.close();
+			cs.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.connected = false;
+		System.out.println("Verbindung wurde abgebaut ("+threadName+")");
+	}
 }
