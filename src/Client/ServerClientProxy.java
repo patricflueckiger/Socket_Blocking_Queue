@@ -8,26 +8,36 @@ import java.io.*;
 import java.net.Socket;
 
 public class ServerClientProxy extends ServerProxy {
-	
 
+	private static volatile ServerClientProxy clientInstance;
 	private Socket clientSocket;
 	private int port = 4444;
 	private PrintWriter out;
 	private BufferedReader in;
 	private String serverIp = ""; 
-	
-	public ServerClientProxy (ClientApplicationInterface clientApplication) {
+
+	//constructor
+	private ServerClientProxy (ClientApplicationInterface clientApplication) {
 
 		super(clientApplication);
 		// TODO Auto-generated constructor stub
 	}
+	//Singleton Design Pattern
+	public static ServerClientProxy getInstance( ClientApplicationInterface clientApplication){
 
+		if(clientInstance == null){
+			synchronized (ServerClientProxy.class){
+				clientInstance = new ServerClientProxy(clientApplication);
+			}
+		}
+		return clientInstance;
+	}
 
 	public void send(Message message) {
 		// TODO Auto-generated method stub
 //		out.println(message);
 //		String resp = in.readLine();
-//		retunr resp;
+//		return resp;
 		try {
 			ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
 			ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
