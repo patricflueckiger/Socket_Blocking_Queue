@@ -3,8 +3,7 @@ package src.Server;
 import src.bin.Message;
 
 import java.net.*;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,7 +11,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.io.*;
 import java.util.function.Consumer;
 
-public final class ServerServer extends Server implements Observer{
+public final class ServerServer extends Server implements ObserverInterface {
 
     private static volatile ServerServer serverInstance;
 	protected int port = 4444;
@@ -22,7 +21,7 @@ public final class ServerServer extends Server implements Observer{
 	ExecutorService executor = Executors.newFixedThreadPool(5);
 	BlockingQueue<TaskItem> queue = new LinkedBlockingDeque<>();
 	private int maxClient = 4;
-	protected List<ClientThread> clients = new List<ClientThread>();
+	protected List<ClientThread> clients = new ArrayList<ClientThread>();
 
 
 	//Singleton Design Pattern
@@ -43,8 +42,8 @@ public final class ServerServer extends Server implements Observer{
     //Constructor of Class
 	private ServerServer(ServerApplicationInterface serverApplication) throws IOException {
 		super(serverApplication);
-		serverSocket = new ServerSocket(port);
-		System.out.println("Server listening to port:"+port);
+		//serverSocket = new ServerSocket(port);
+
 	}
 
 	@Override
@@ -59,16 +58,16 @@ public final class ServerServer extends Server implements Observer{
 
 	}
 	
-	public void openConnection(String connectionString) {
+	public void openConnection() {
 		
 		try {
 			ServerSocket serverSocket = new ServerSocket(port);
-			
+			System.out.println("Server listening to port:"+port);
 			for(int i=0; i < maxClient; i++) {
-				clients.Add(new ClientThread());
+				clients.add(new ClientThread(serverSocket, Integer.toString(i++), this));
+				clients.get(i-1).run();
 			}
-			sockets.put(connectionString, serverSocket.accept(serverSocket, i++.toString(), this)); 
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,11 +80,9 @@ public final class ServerServer extends Server implements Observer{
         //Implement sending Task
 		return null;
 	}
-	
-	@Override
-    public void update(Observable o, Message message) {
-		serverApplication.handleMessage(message);
-    }
 
+		@Override
+	public void update(Observable o, Object arg) {
 
+	}
 }

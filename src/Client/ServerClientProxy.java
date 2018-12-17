@@ -1,52 +1,75 @@
 package src.Client;
 import src.Client.*;
+import src.bin.ClientMessage;
+import src.bin.ClientMessageStub;
 import src.bin.Message;
-public class ServerClientProxy extends ServerProxy{
+
+import java.io.*;
+import java.net.Socket;
+
+public class ServerClientProxy extends ServerProxy {
 	
 
 	private Socket clientSocket;
 	private int port = 4444;
 	private PrintWriter out;
-	private BufferedReader in; 
+	private BufferedReader in;
 	private String serverIp = ""; 
 	
-	public ClientServerProxy(ClientApplicationInterface clientApplication) {
+	public ServerClientProxy (ClientApplicationInterface clientApplication) {
 
 		super(clientApplication);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void send(String message) {
+
+	public void send(Message message) {
 		// TODO Auto-generated method stub
 //		out.println(message);
 //		String resp = in.readLine();
 //		retunr resp;
-		out = new PrintWriter(clientSocket.getOutputStream(message), true);
-		
-		
+		try {
+			ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
+			ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
 	}
+
 	private void deliverResponseMessageToClient(Message responseMessage) {
 		Thread responseThread = new Thread() {
 			@Override
 			public void run() {
-				clientApplication.handleMessage(responseMessage);
+				clientApplicationInterface.handleMessage(responseMessage);
 			}
 		};
 		responseThread.start();
 	}
 
 	public void openConnection(String ip, int port) {
-		//socket eröffnen message an server 
-	Socket clientSocket = new Socket(ip, port);
-	//	out = new PrintWriter(clientSocket.getOutputStream(), true);
-		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-		
+		//socket erï¿½ffnen message an server 
+		Socket clientSocket = null;
+		try {
+			clientSocket = new Socket(ip, port);
+			ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+			os.writeObject(new ClientMessageStub("playerOne"));
+			//os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//	out = new PrintWriter(clientSocket.getOutputStream(), true);
+
 	}
 	public void closeConnection() {
-		in.close();
-		out.close();
-		clientSocket.close();
+		try {
+			in.close();
+			out.close();
+			clientSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	} 
 }

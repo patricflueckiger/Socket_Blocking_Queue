@@ -1,5 +1,7 @@
 package src.Server;
 
+import src.bin.ClientMessage;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -38,7 +40,7 @@ public class ClientThread extends Thread
 		this.threadName = Thread.currentThread().getName();
 		System.out.println("Server wartet auf Verbindung ("+threadName+")");
 		
-		sendMessage("");
+		sendMessage("hello");
 		
 	}
 	
@@ -53,14 +55,14 @@ public class ClientThread extends Thread
 			this.connected = true;
 			System.out.println("Verbindung zum ClientSocket wurde aufgebaut.");
 		
-			os.writeObject(message);
-			
-			observable.notifyObservers(is.readObject());
-			
+			//os.writeObject(message);
+			ClientMessage clientMessage = (ClientMessage) is.readObject();
 			is.close();
 			os.close();
 			cs.close();
-			
+
+			observable.notifyObservers();
+
 			this.connected = false;
 			System.out.println("Verbindung wurde abgebaut ("+threadName+")");
 			

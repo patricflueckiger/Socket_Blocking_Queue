@@ -10,12 +10,11 @@ public class Main implements ServerApplicationInterface {
 		ServerApplicationStub serverApplicationStub = new ServerApplicationStub();
 		// TODO Auto-generated method stub
 		server = ServerServer.getInstance(serverApplicationStub);
-
+		server.openConnection();
 	}
 
 	@Override
 	public void handleMessage(Message message, String connectionId) {
-		server.openConnection(connectionId);
 		System.out.println(message.toString());
 	}
 
