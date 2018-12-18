@@ -7,9 +7,9 @@ import src.bin.Message;
 import java.io.*;
 import java.net.Socket;
 
-public class ServerClientProxy extends ServerProxy {
+public class ClientServerProxy extends ServerProxy {
 
-	private static volatile ServerClientProxy clientInstance;
+	private static volatile ClientServerProxy clientInstance;
 	private Socket clientSocket;
 	private int port = 4444;
 	private PrintWriter out;
@@ -18,17 +18,17 @@ public class ServerClientProxy extends ServerProxy {
 	ObjectInputStream is;
 	ObjectOutputStream os;
 	//constructor
-	private ServerClientProxy (ClientApplicationInterface clientApplication) {
+	private ClientServerProxy (ClientApplicationInterface clientApplication) {
 
 		super(clientApplication);
 		// TODO Auto-generated constructor stub
 	}
 	//Singleton Design Pattern
-	public static ServerClientProxy getInstance( ClientApplicationInterface clientApplication){
+	public static ClientServerProxy getInstance( ClientApplicationInterface clientApplication){
 
 		if(clientInstance == null){
-			synchronized (ServerClientProxy.class){
-				clientInstance = new ServerClientProxy(clientApplication);
+			synchronized (ClientServerProxy.class){
+				clientInstance = new ClientServerProxy(clientApplication);
 			}
 		}
 		return clientInstance;
