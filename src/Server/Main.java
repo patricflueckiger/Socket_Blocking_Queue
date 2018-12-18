@@ -11,6 +11,7 @@ public class Main implements ServerApplicationInterface {
 		// TODO Auto-generated method stub
 		server = ServerServer.getInstance(serverApplicationStub);
 		server.openConnection();
+		server.send(new ClientMessageStub("ServerHandshake"),"1");
 	}
 
 	@Override

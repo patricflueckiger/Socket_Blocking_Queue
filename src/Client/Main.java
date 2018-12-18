@@ -11,8 +11,14 @@ public class Main implements ClientApplicationInterface {
     public static void main(String[] args) {
         ClientApplicationStub clientStub = new ClientApplicationStub();
         // TODO Auto-generated method stub
-        server = new ServerClientProxy(clientStub);
+        server = ServerClientProxy.getInstance(clientStub);
         server.openConnection("127.0.0.1",4444);
+        ServerClientProxy server1= ServerClientProxy.getInstance(clientStub);
+        ServerClientProxy server2 = ServerClientProxy.getInstance(clientStub);
+        ServerClientProxy server3 = ServerClientProxy.getInstance(clientStub);
+        server1.openConnection("127.0.0.1",4444);
+        server2.openConnection("127.0.0.1",4444);
+        server3.openConnection("127.0.0.1",4444);
 
     }
 

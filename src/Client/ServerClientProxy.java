@@ -14,8 +14,9 @@ public class ServerClientProxy extends ServerProxy {
 	private int port = 4444;
 	private PrintWriter out;
 	private BufferedReader in;
-	private String serverIp = ""; 
-
+	private String serverIp = "";
+	ObjectInputStream is;
+	ObjectOutputStream os;
 	//constructor
 	private ServerClientProxy (ClientApplicationInterface clientApplication) {
 
@@ -35,24 +36,29 @@ public class ServerClientProxy extends ServerProxy {
 
 	public void send(Message message) {
 		// TODO Auto-generated method stub
-//		out.println(message);
-//		String resp = in.readLine();
-//		return resp;
 		try {
-			ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
-			ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+			os.writeObject(message);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 
-	private void deliverResponseMessageToClient(Message responseMessage) {
+	private void getMessagesInput() {
 		Thread responseThread = new Thread() {
+
+			ObjectInputStream anotherInput = is;
 			@Override
 			public void run() {
-				clientApplicationInterface.handleMessage(responseMessage);
+				while (true){
+					try {
+						Message clientMessage = (Message) anotherInput.readObject();
+						clientApplicationInterface.handleMessage(clientMessage);
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		};
 		responseThread.start();
@@ -63,13 +69,13 @@ public class ServerClientProxy extends ServerProxy {
 		Socket clientSocket = null;
 		try {
 			clientSocket = new Socket(ip, port);
-			ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-			os.writeObject(new ClientMessageStub("playerOne"));
-			//os.close();
+			System.out.println("Connection geöffnet von Client");
+			os = new ObjectOutputStream(clientSocket.getOutputStream());
+			is = new ObjectInputStream(clientSocket.getInputStream());
+			getMessagesInput();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//	out = new PrintWriter(clientSocket.getOutputStream(), true);
 
 	}
 	public void closeConnection() {
