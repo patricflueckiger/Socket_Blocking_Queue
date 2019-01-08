@@ -17,16 +17,18 @@ public class ClientServerProxy extends ServerProxy {
 	private String serverIp = "";
 	ObjectInputStream is;
 	ObjectOutputStream os;
+
 	//constructor
 	private ClientServerProxy (ClientApplicationInterface clientApplication) {
 
 		super(clientApplication);
 		// TODO Auto-generated constructor stub
 	}
-	//Singleton Design Pattern
+	//Singleton Design Pattern, damit sich nur ein Client als ein Spieler anmelden kann
 	public static ClientServerProxy getInstance( ClientApplicationInterface clientApplication){
 
 		if(clientInstance == null){
+			//geschützter Codebereich
 			synchronized (ClientServerProxy.class){
 				clientInstance = new ClientServerProxy(clientApplication);
 			}
@@ -37,6 +39,7 @@ public class ClientServerProxy extends ServerProxy {
 	public void send(Message message) {
 		// TODO Auto-generated method stub
 		try {
+			// sendet message
 			os.writeObject(message);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -47,12 +50,14 @@ public class ClientServerProxy extends ServerProxy {
 		Thread responseThread = new Thread() {
 
 			ObjectInputStream anotherInput = is;
+
+			// Objekt responseThread wird dirket überschrieben
 			@Override
 			public void run() {
 				while (true){
 					try {
 						Message clientMessage = (Message) anotherInput.readObject();
-						clientApplicationInterface.handleMessage(clientMessage);
+						clientApplicationInterface.handleMessage(clientMessage); // gibt cleintMessage an ClientapplicationInterface handleMessage () weiter -> überschriebene Methode
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (ClassNotFoundException e) {
@@ -63,6 +68,8 @@ public class ClientServerProxy extends ServerProxy {
 		};
 		responseThread.start();
 	}
+
+	// wird von client aufgrufen, um sich anzumelden
 
 	public void openConnection(String ip, int port) {
 		//socket er�ffnen message an server 
@@ -78,6 +85,7 @@ public class ClientServerProxy extends ServerProxy {
 		}
 
 	}
+	// wird von Client aufgerufen um sich abzumelden
 	public void closeConnection() {
 		try {
 			in.close();
